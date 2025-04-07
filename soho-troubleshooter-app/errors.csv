@@ -1,0 +1,7 @@
+ErrorID,ErrorMessage,Module,Category,Frequency,Severity,QuickFix,RootCause,EscalationTeam
+504,API Timeout,Integration,MostOccurred,132,High,Restart Logic App,Delay in Logic App,Integration Team
+PDR-01,Posting Date Not Within Range,Finance,MostOccurred,121,Medium,Update GL Setup,Incorrect Posting Range,Finance Lead
+WH-12,Warehouse Activity Pending,Warehouse,MostOccurred,98,Medium,Complete Tasks,Open Warehouse Docs,Ops Manager
+DIM-09,Dimension Mismatch,Finance,LeastOccurred,12,High,Correct Dimensions,Wrong Code Mapping,Finance Lead
+FX-17,Currency Conversion Failure,Sales,LeastOccurred,9,High,Recheck FX Rates,Missing Rate Setup,Finance Team
+PAF-02,Power Automate Flow Failed,Automation,LeastOccurred,7,Medium,Review Flow History,Trigger Misfire,Automation Support

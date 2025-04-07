@@ -1,0 +1,8 @@
+# Ignore node_modules and build artifacts
+client/node_modules/
+server/node_modules/
+client/dist/
+.env
+.DS_Store
+*.log
+npm-debug.log*

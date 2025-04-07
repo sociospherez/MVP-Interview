@@ -1,0 +1,4 @@
+{"index":{"_index":"error-log-index"}}
+{"ErrorID":"504","ErrorMessage":"API Timeout","Module":"Integration","Category":"MostOccurred","Frequency":132,"Severity":"High","QuickFix":"Restart Logic App","RootCause":"Delay in Logic App","EscalationTeam":"Integration Team"}
+{"index":{"_index":"error-log-index"}}
+{"ErrorID":"PDR-01","ErrorMessage":"Posting Date Not Within Range","Module":"Finance","Category":"MostOccurred","Frequency":121,"Severity":"Medium","QuickFix":"Update GL Setup","RootCause":"Incorrect Posting Range","EscalationTeam":"Finance Lead"}
