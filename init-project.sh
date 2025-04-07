@@ -1,20 +1,24 @@
 #!/bin/bash
 
+set -e
+
+PROJECT_DIR=soho-troubleshooter-app
+
 echo "📁 Creating project folders..."
-mkdir -p soho-troubleshooter-app/client/src
-mkdir -p soho-troubleshooter-app/server
+mkdir -p $PROJECT_DIR/client/src
+mkdir -p $PROJECT_DIR/server
 
 echo "📄 Creating and populating files..."
 
-cat <<EOF > soho-troubleshooter-app/client/src/TroubleshootingDashboard.jsx
+# Safe EOF quoting to prevent interpretation
+cat <<'EOF' > $PROJECT_DIR/client/src/TroubleshootingDashboard.jsx
 // React TroubleshootingDashboard starter component
 export default function TroubleshootingDashboard() {
-  return <div className=\"p-6\">Hello from Dashboard!</div>;
+  return <div className="p-6">Hello from Dashboard!</div>;
 }
 EOF
 
-cat <<EOF > soho-troubleshooter-app/server/elastic_backend.js
-// ElasticSearch Express backend
+cat <<'EOF' > $PROJECT_DIR/server/elastic_backend.js
 import express from 'express';
 import { Client } from '@elastic/elasticsearch';
 import cors from 'cors';
@@ -45,7 +49,7 @@ app.get('/api/search', async (req, res) => {
 app.listen(port, () => console.log(`Elastic API running on port ${port}`));
 EOF
 
-cat <<EOF > soho-troubleshooter-app/errors.csv
+cat <<'EOF' > $PROJECT_DIR/errors.csv
 ErrorID,ErrorMessage,Module,Category,Frequency,Severity,QuickFix,RootCause,EscalationTeam
 504,API Timeout,Integration,MostOccurred,132,High,Restart Logic App,Delay in Logic App,Integration Team
 PDR-01,Posting Date Not Within Range,Finance,MostOccurred,121,Medium,Update GL Setup,Incorrect Posting Range,Finance Lead
@@ -55,32 +59,35 @@ FX-17,Currency Conversion Failure,Sales,LeastOccurred,9,High,Recheck FX Rates,Mi
 PAF-02,Power Automate Flow Failed,Automation,LeastOccurred,7,Medium,Review Flow History,Trigger Misfire,Automation Support
 EOF
 
-cat <<EOF > soho-troubleshooter-app/elastic_bulk_errors.json
+cat <<'EOF' > $PROJECT_DIR/elastic_bulk_errors.json
 {"index":{"_index":"error-log-index"}}
 {"ErrorID":"504","ErrorMessage":"API Timeout","Module":"Integration","Category":"MostOccurred","Frequency":132,"Severity":"High","QuickFix":"Restart Logic App","RootCause":"Delay in Logic App","EscalationTeam":"Integration Team"}
 {"index":{"_index":"error-log-index"}}
 {"ErrorID":"PDR-01","ErrorMessage":"Posting Date Not Within Range","Module":"Finance","Category":"MostOccurred","Frequency":121,"Severity":"Medium","QuickFix":"Update GL Setup","RootCause":"Incorrect Posting Range","EscalationTeam":"Finance Lead"}
 EOF
 
-cat <<EOF > soho-troubleshooter-app/start.sh
+cat <<'EOF' > $PROJECT_DIR/start.sh
 #!/bin/bash
+
+set -e
 
 echo "🚀 Starting ElasticSearch, Backend, and Frontend..."
 
-docker run -d --name soho-es -p 9200:9200 -e "discovery.type=single-node" elasticsearch:8.11.1
+docker run -d --rm --name soho-es -p 9200:9200 -e "discovery.type=single-node" elasticsearch:8.11.1
 sleep 20
 
-curl -XPOST "http://localhost:9200/_bulk" -H "Content-Type: application/json" --data-binary @elastic_bulk_errors.json
+curl -XPOST "http://localhost:9200/_bulk" -H "Content-Type: application/json" --data-binary @../elastic_bulk_errors.json
 
-cd server
+cd ../server
 npm install
 node elastic_backend.js &
 cd ../client
 npm install
 npm run dev
 EOF
+chmod +x $PROJECT_DIR/start.sh
 
-cat <<EOF > soho-troubleshooter-app/README.md
+cat <<'EOF' > $PROJECT_DIR/README.md
 # Soho Troubleshooter App
 
 A self-serve error diagnostics tool powered by CSV/Fuse.js or ElasticSearch, built with React + Vite.
@@ -92,7 +99,7 @@ A self-serve error diagnostics tool powered by CSV/Fuse.js or ElasticSearch, bui
 3. App launches at [localhost:5173](http://localhost:5173)
 EOF
 
-cat <<EOF > soho-troubleshooter-app/.gitignore
+cat <<'EOF' > $PROJECT_DIR/.gitignore
 # Ignore node_modules and build artifacts
 client/node_modules/
 server/node_modules/
@@ -103,4 +110,4 @@ client/dist/
 npm-debug.log*
 EOF
 
-echo "✅ Project scaffold fully created and populated in ./soho-troubleshooter-app"
+echo "✅ Final project scaffold fully created in ./$PROJECT_DIR"
