@@ -3,6 +3,7 @@
 set -e
 
 PROJECT_DIR=soho-troubleshooter-app
+PROJECT_DIR=troubleshooter-app
 
 echo "📁 Creating project folders..."
 mkdir -p $PROJECT_DIR/client/src
